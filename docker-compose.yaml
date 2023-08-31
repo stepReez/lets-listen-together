@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:13.7-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=llt
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  server:
+    image: link-service
+    build: link-service/
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=llt
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=db
+      - DB_PORT=5432
